@@ -22,7 +22,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
     setIsLoading(true);
 
     try {
-      const endpoint = mode === "login" ? "/api/login" : "/api/register";
+      const endpoint = mode === "login" ? "/login" : "/register";
       const payload = mode === "login" ? { email, password } : { name, email, password };
       
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, {
