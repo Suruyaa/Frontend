@@ -13,7 +13,7 @@ export default function OrdersPage() {
 
   const fetchOrders = () => {
     if (user) {
-      fetch(`http://127.0.0.1:8000/api/user/${user.id}/orders`)
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${user.id}/orders`)
         .then(res => res.json())
         .then(data => {
           setOrders(data);
@@ -57,7 +57,7 @@ export default function OrdersPage() {
 
     (window as any).snap.pay(snapToken, {
       onSuccess: async function(result: any) {
-        await fetch(`http://127.0.0.1:8000/api/orders/${orderNumber}/success`, { method: "POST" });
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/${orderNumber}/success`, { method: "POST" });
         alert("Pembayaran berhasil diselesaikan!");
         fetchOrders();
       },
@@ -77,7 +77,7 @@ export default function OrdersPage() {
     if (!confirm("Yakin ingin membatalkan pesanan ini?")) return;
     
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/orders/${orderNumber}/cancel`, { method: "POST" });
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/${orderNumber}/cancel`, { method: "POST" });
       if (res.ok) {
         alert("Pesanan berhasil dibatalkan.");
         fetchOrders();

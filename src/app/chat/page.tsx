@@ -36,7 +36,7 @@ export default function ChatPage() {
     try {
       // First, try to get recommendations from our FastAPI endpoint through Laravel
       // Usually, we'd send the extracted needs. For now, let's simulate sending chat to Laravel.
-      const res = await fetch("http://127.0.0.1:8000/api/ai-assistant/chat", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ai-assistant/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
@@ -71,7 +71,7 @@ export default function ChatPage() {
             // Remove the JSON block from the text shown to user
             aiContent = aiContent.replace(jsonRegex, "").trim();
             
-            const recRes = await fetch("http://127.0.0.1:8000/api/recommendation", {
+            const recRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/recommendation`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(params)
@@ -94,7 +94,7 @@ export default function ChatPage() {
       }
       
       try {
-        await fetch("http://127.0.0.1:8000/api/chat-logs", {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/chat-logs`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

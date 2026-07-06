@@ -65,7 +65,7 @@ export default function ProfilePage() {
     if (avatar) data.append("avatar", avatar);
     
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/profile/${user.id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profile/${user.id}`, {
         method: "POST",
         body: data,
       });

@@ -27,7 +27,7 @@ export default function AdminDashboard() {
       if (activeTab === "chatlogs") endpoint = "chat-logs";
       if (activeTab === "reviews") endpoint = "reviews";
       
-      const res = await fetch(`http://127.0.0.1:8000/api/${endpoint}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}`);
       const result = await res.json();
       setData(result);
     } catch (e) {
@@ -74,7 +74,7 @@ export default function AdminDashboard() {
   const handleDelete = async (id: number) => {
     if (!confirm("Yakin ingin menghapus data ini?")) return;
     try {
-      await fetch(`http://127.0.0.1:8000/api/${activeTab}/${id}`, { method: "DELETE" });
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${activeTab}/${id}`, { method: "DELETE" });
       fetchData();
     } catch (e) {
       console.error(e);
@@ -85,8 +85,8 @@ export default function AdminDashboard() {
     e.preventDefault();
     const isProduct = activeTab === "products";
     const url = isProduct && productForm.id 
-      ? `http://127.0.0.1:8000/api/${activeTab}/${productForm.id}` 
-      : (!isProduct && userForm.id ? `http://127.0.0.1:8000/api/${activeTab}/${userForm.id}` : `http://127.0.0.1:8000/api/${activeTab}`);
+      ? `${process.env.NEXT_PUBLIC_API_URL}/${activeTab}/${productForm.id}` 
+      : (!isProduct && userForm.id ? `${process.env.NEXT_PUBLIC_API_URL}/${activeTab}/${userForm.id}` : `${process.env.NEXT_PUBLIC_API_URL}/${activeTab}`);
     
     // For Laravel PUT/PATCH with files, we actually need to POST with _method=PUT
     let method = "POST"; 

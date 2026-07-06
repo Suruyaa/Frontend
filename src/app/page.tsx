@@ -3,7 +3,7 @@ import Link from "next/link";
 export default async function Home() {
   let latestProducts = [];
   try {
-    const res = await fetch("http://127.0.0.1:8000/api/products", { cache: "no-store" });
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, { cache: "no-store" });
     if (res.ok) {
       const data = await res.json();
       latestProducts = data.slice(0, 3); // Take top 3

@@ -10,8 +10,8 @@ export default async function ProductDetail({ params }: { params: Promise<{ id: 
   
   try {
     const [resProduct, resReviews] = await Promise.all([
-      fetch(`http://127.0.0.1:8000/api/products/${resolvedParams.id}`, { cache: "no-store" }),
-      fetch(`http://127.0.0.1:8000/api/products/${resolvedParams.id}/reviews`, { cache: "no-store" })
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${resolvedParams.id}`, { cache: "no-store" }),
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${resolvedParams.id}/reviews`, { cache: "no-store" })
     ]);
 
     if (!resProduct.ok) {

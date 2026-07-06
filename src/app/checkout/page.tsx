@@ -52,7 +52,7 @@ export default function CheckoutPage() {
     const orderId = "TECHSTORE-" + Date.now();
     
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/payment/token", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payment/token`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -82,7 +82,7 @@ export default function CheckoutPage() {
         (window as any).snap.pay(data.snap_token, {
           onSuccess: async function(result: any) {
             // Update order status on backend
-            await fetch(`http://127.0.0.1:8000/api/orders/${orderId}/success`, { method: "POST" });
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/${orderId}/success`, { method: "POST" });
             setIsSuccess(true);
           },
           onPending: function(result: any) {
