@@ -1,10 +1,19 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Link from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 
 export default function ChatPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const user = localStorage.getItem("techstore_user");
+    if (!user) {
+      alert("Kamu harus login dulu untuk menggunakan AI Assistant!");
+      router.push("/");
+    }
+  }, [router]);
   const { addToCart } = useCart();
   const [messages, setMessages] = useState<Array<{ role: "user" | "ai"; content: string; products?: any[] }>>([
     {
