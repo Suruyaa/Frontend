@@ -20,6 +20,9 @@ import { AuthProvider } from "@/context/AuthContext";
 export const metadata: Metadata = {
   title: "TechStore AI",
   description: "TechStore AI Assistant",
+  verification: {
+    google: "H-_H1RiFQetzjrIdgXcctbBUuZterDXUcT7_WP7JFx0",
+  },
 };
 
 export default function RootLayout({
