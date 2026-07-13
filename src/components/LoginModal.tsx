@@ -21,13 +21,22 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
     e.preventDefault();
     setIsLoading(true);
 
+    if (!email || !password || (mode === "register" && !name)) {
+      alert("Semua field wajib diisi dengan benar.");
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const endpoint = mode === "login" ? "/login" : "/register";
       const payload = mode === "login" ? { email, password } : { name, email, password };
       
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
         body: JSON.stringify(payload)
       });
       

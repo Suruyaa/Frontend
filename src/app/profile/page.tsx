@@ -38,7 +38,12 @@ export default function ProfilePage() {
   }, [user, router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (e.target.name === "phone") {
+      const value = e.target.value.replace(/\D/g, "");
+      setFormData({ ...formData, phone: value });
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
   };
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -154,6 +159,8 @@ export default function ProfilePage() {
                 <input 
                   type="text" 
                   name="phone"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   value={formData.phone}
                   onChange={handleChange}
                   className="w-full text-black border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 outline-none"

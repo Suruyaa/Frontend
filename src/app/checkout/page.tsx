@@ -176,7 +176,7 @@ export default function CheckoutPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Nomor Telepon</label>
-                      <input required type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 border bg-white text-black placeholder-gray-500" placeholder="08123456789" />
+                      <input required type="tel" inputMode="numeric" pattern="[0-9]*" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))} className="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 border bg-white text-black placeholder-gray-500" placeholder="08123456789" />
                     </div>
                   </div>
                   <div>
