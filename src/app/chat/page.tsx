@@ -64,21 +64,24 @@ export default function ChatPage() {
       if (data?.choices?.[0]?.message?.content) {
           aiContent = data.choices[0].message.content;
       } else if (data?.error) {
-          aiContent = `[Error AI]: ${data.error}. ${data.message || ''}`;
+          const errMsg = typeof data.error === 'object' ? JSON.stringify(data.error) : data.error;
+          aiContent = `[Error AI]: ${errMsg}. ${data.details || data.message || ''}`;
       } else {
           aiContent = `[System Error]: Gagal mendapatkan respon valid. Respons mentah: ${JSON.stringify(data).substring(0, 100)}...`;
       }
       
       // Extract JSON block if AI decided to recommend
-      const jsonRegex = /```json\s*(\{[\s\S]*?\})\s*```/;
-      const match = aiContent.match(jsonRegex);
+      const jsonRegex = /```(?:json)?\s*(\{[\s\S]*?\})\s*```/i;
+      const fallbackRegex = /(\{[\s\S]*"intent"\s*:\s*"recommendation"[\s\S]*?\})/i;
+      const match = aiContent.match(jsonRegex) || aiContent.match(fallbackRegex);
       
       if (match) {
         try {
-          const params = JSON.parse(match[1]);
-          if (params.intent === "recommendation") {
+          const sanitizedJson = match[1].replace(/,\s*([\}\]])/g, '$1');
+          const params = JSON.parse(sanitizedJson);
+          if (params.intent && params.intent.toLowerCase() === "recommendation") {
             // Remove the JSON block from the text shown to user
-            aiContent = aiContent.replace(jsonRegex, "").trim();
+            aiContent = aiContent.replace(match[0], "").trim();
             
             const recRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/recommendation`, {
               method: "POST",
