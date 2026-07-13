@@ -3,6 +3,33 @@ import { notFound } from "next/navigation";
 import AddToCartButton from "./AddToCartButton";
 import ReviewsSection from "./ReviewsSection";
 
+import type { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${resolvedParams.id}`, { cache: "no-store" });
+    if (res.ok) {
+      const product = await res.json();
+      return {
+        title: product.name,
+        description: `Beli ${product.name} dengan harga Rp ${new Intl.NumberFormat("id-ID").format(product.price)}. Spesifikasi: ${product.processor}, RAM ${product.ram}GB, Storage ${product.storage}GB.`,
+        keywords: [product.name, product.brand, product.category, "jual laptop", "laptop murah", "TechStore AI"],
+        openGraph: {
+          title: `${product.name} | TechStore AI`,
+          description: `Beli ${product.name} dengan harga termurah hanya di TechStore AI.`,
+          images: [product.image_url || ""],
+        }
+      };
+    }
+  } catch (e) {
+    console.error(e);
+  }
+  return {
+    title: "Detail Produk"
+  };
+}
+
 export default async function ProductDetail({ params }: { params: Promise<{ id: string }> }) {
   let product = null;
   let reviews = [];
