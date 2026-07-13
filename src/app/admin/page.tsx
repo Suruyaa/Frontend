@@ -27,7 +27,10 @@ export default function AdminDashboard() {
       if (activeTab === "chatlogs") endpoint = "chat-logs";
       if (activeTab === "reviews") endpoint = "reviews";
       
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}`);
+      const token = localStorage.getItem("techstore_token");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}`, {
+        headers: token ? { "Authorization": `Bearer ${token}` } : undefined
+      });
       const result = await res.json();
       setData(result);
     } catch (e) {
@@ -38,7 +41,29 @@ export default function AdminDashboard() {
   };
 
   useEffect(() => {
-    fetchData();
+    // Client-side route guard
+    const checkAuth = () => {
+      const storedUser = localStorage.getItem("techstore_user");
+      if (!storedUser) {
+        window.location.href = "/";
+        return;
+      }
+      try {
+        const user = JSON.parse(storedUser);
+        if (user.role !== "admin") {
+          window.location.href = "/";
+          return;
+        }
+      } catch (e) {
+        window.location.href = "/";
+        return;
+      }
+      
+      // If admin, fetch data
+      fetchData();
+    };
+    
+    checkAuth();
   }, [activeTab]);
 
   // Handle Input Changes
@@ -78,7 +103,11 @@ export default function AdminDashboard() {
   const handleDelete = async (id: number) => {
     if (!confirm("Yakin ingin menghapus data ini?")) return;
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${activeTab}/${id}`, { method: "DELETE" });
+      const token = localStorage.getItem("techstore_token");
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${activeTab}/${id}`, { 
+        method: "DELETE",
+        headers: token ? { "Authorization": `Bearer ${token}` } : undefined
+      });
       fetchData();
     } catch (e) {
       console.error(e);
@@ -98,6 +127,10 @@ export default function AdminDashboard() {
     try {
       let bodyData;
       let headers: any = {};
+      const token = localStorage.getItem("techstore_token");
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
 
       if (isProduct) {
         bodyData = new FormData();

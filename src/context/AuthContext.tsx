@@ -13,6 +13,7 @@ type User = {
   city?: string;
   postal_code?: string;
   avatar?: string;
+  token?: string;
 };
 
 type AuthContextType = {
@@ -36,13 +37,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // Save user to local storage on change
+  // Save user to local storage and cookie on change
   const handleSetUser = (userData: User | null) => {
     setUser(userData);
     if (userData) {
       localStorage.setItem("techstore_user", JSON.stringify(userData));
+      document.cookie = `techstore_role=${userData.role}; path=/; max-age=86400`; // 1 day
+      if (userData.token) {
+        localStorage.setItem("techstore_token", userData.token);
+      }
     } else {
       localStorage.removeItem("techstore_user");
+      document.cookie = "techstore_role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      localStorage.removeItem("techstore_token");
     }
   };
 

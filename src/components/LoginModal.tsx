@@ -44,7 +44,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
       
       if (res.ok) {
         alert(`${mode === "login" ? "Login" : "Registrasi"} berhasil sebagai ${data.user.role}!`);
-        onLoginSuccess(data.user);
+        onLoginSuccess({ ...data.user, token: data.token });
         
         // Reset form
         setName("");
