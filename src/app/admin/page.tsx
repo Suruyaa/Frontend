@@ -46,7 +46,11 @@ export default function AdminDashboard() {
     if (e.target.name === 'image') {
       setProductForm({ ...productForm, image: e.target.files[0] });
     } else {
-      setProductForm({ ...productForm, [e.target.name]: e.target.value });
+      let val = e.target.value;
+      if (['price', 'ram', 'storage', 'processor_score', 'gpu_score', 'screen_score', 'battery_score'].includes(e.target.name)) {
+        val = val.toString().replace(/\D/g, "");
+      }
+      setProductForm({ ...productForm, [e.target.name]: val });
     }
   };
   const handleUserChange = (e: any) => setUserForm({ ...userForm, [e.target.name]: e.target.value });
@@ -269,10 +273,10 @@ export default function AdminDashboard() {
                 <>
                   <div className="col-span-2 sm:col-span-1"><label className="block text-sm text-gray-700 mb-1">Nama Produk</label><input required name="name" value={productForm.name} onChange={handleProductChange} className="w-full border rounded-lg p-2 bg-white text-black placeholder-gray-500" /></div>
                   <div className="col-span-2 sm:col-span-1"><label className="block text-sm text-gray-700 mb-1">Brand</label><input required name="brand" value={productForm.brand} onChange={handleProductChange} className="w-full border rounded-lg p-2 bg-white text-black placeholder-gray-500" /></div>
-                  <div className="col-span-2 sm:col-span-1"><label className="block text-sm text-gray-700 mb-1">Harga (Rp)</label><input required type="number" name="price" value={productForm.price} onChange={handleProductChange} className="w-full border rounded-lg p-2 bg-white text-black placeholder-gray-500" /></div>
+                  <div className="col-span-2 sm:col-span-1"><label className="block text-sm text-gray-700 mb-1">Harga (Rp)</label><input required type="text" inputMode="numeric" pattern="[0-9]*" name="price" value={productForm.price} onChange={handleProductChange} className="w-full border rounded-lg p-2 bg-white text-black placeholder-gray-500" /></div>
                   <div className="col-span-2 sm:col-span-1"><label className="block text-sm text-gray-700 mb-1">Kategori</label><input required name="category" value={productForm.category} onChange={handleProductChange} className="w-full border rounded-lg p-2 bg-white text-black placeholder-gray-500" /></div>
-                  <div className="col-span-2 sm:col-span-1"><label className="block text-sm text-gray-700 mb-1">RAM (GB)</label><input required type="number" name="ram" value={productForm.ram} onChange={handleProductChange} className="w-full border rounded-lg p-2 bg-white text-black placeholder-gray-500" /></div>
-                  <div className="col-span-2 sm:col-span-1"><label className="block text-sm text-gray-700 mb-1">Storage (GB)</label><input required type="number" name="storage" value={productForm.storage} onChange={handleProductChange} className="w-full border rounded-lg p-2 bg-white text-black placeholder-gray-500" /></div>
+                  <div className="col-span-2 sm:col-span-1"><label className="block text-sm text-gray-700 mb-1">RAM (GB)</label><input required type="text" inputMode="numeric" pattern="[0-9]*" name="ram" value={productForm.ram} onChange={handleProductChange} className="w-full border rounded-lg p-2 bg-white text-black placeholder-gray-500" /></div>
+                  <div className="col-span-2 sm:col-span-1"><label className="block text-sm text-gray-700 mb-1">Storage (GB)</label><input required type="text" inputMode="numeric" pattern="[0-9]*" name="storage" value={productForm.storage} onChange={handleProductChange} className="w-full border rounded-lg p-2 bg-white text-black placeholder-gray-500" /></div>
                   <div className="col-span-2 sm:col-span-1"><label className="block text-sm text-gray-700 mb-1">Processor</label><input required name="processor" value={productForm.processor} onChange={handleProductChange} className="w-full border rounded-lg p-2 bg-white text-black placeholder-gray-500" /></div>
                   <div className="col-span-2 sm:col-span-1"><label className="block text-sm text-gray-700 mb-1">GPU</label><input required name="gpu" value={productForm.gpu} onChange={handleProductChange} className="w-full border rounded-lg p-2 bg-white text-black placeholder-gray-500" /></div>
                   <div className="col-span-2 sm:col-span-1"><label className="block text-sm text-gray-700 mb-1">Gambar via File</label><input type="file" accept="image/*" name="image" onChange={handleProductChange} className="w-full border rounded-lg p-2 bg-white text-black" /></div>
@@ -281,10 +285,10 @@ export default function AdminDashboard() {
                   
                   <div className="col-span-2 grid grid-cols-4 gap-2 mt-2 p-4 bg-blue-50 rounded-lg border border-blue-100">
                     <p className="col-span-4 text-xs font-bold text-blue-800 mb-2">Parameter AI (Skor 1-10)</p>
-                    <div><label className="text-xs">CPU</label><input required type="number" name="processor_score" value={productForm.processor_score} onChange={handleProductChange} className="w-full border rounded p-1 text-sm bg-white text-black placeholder-gray-500" /></div>
-                    <div><label className="text-xs">GPU</label><input required type="number" name="gpu_score" value={productForm.gpu_score} onChange={handleProductChange} className="w-full border rounded p-1 text-sm bg-white text-black placeholder-gray-500" /></div>
-                    <div><label className="text-xs">Screen</label><input required type="number" name="screen_score" value={productForm.screen_score} onChange={handleProductChange} className="w-full border rounded p-1 text-sm bg-white text-black placeholder-gray-500" /></div>
-                    <div><label className="text-xs">Battery</label><input required type="number" name="battery_score" value={productForm.battery_score} onChange={handleProductChange} className="w-full border rounded p-1 text-sm bg-white text-black placeholder-gray-500" /></div>
+                    <div><label className="text-xs">CPU</label><input required type="text" inputMode="numeric" pattern="[0-9]*" name="processor_score" value={productForm.processor_score} onChange={handleProductChange} className="w-full border rounded p-1 text-sm bg-white text-black placeholder-gray-500" /></div>
+                    <div><label className="text-xs">GPU</label><input required type="text" inputMode="numeric" pattern="[0-9]*" name="gpu_score" value={productForm.gpu_score} onChange={handleProductChange} className="w-full border rounded p-1 text-sm bg-white text-black placeholder-gray-500" /></div>
+                    <div><label className="text-xs">Screen</label><input required type="text" inputMode="numeric" pattern="[0-9]*" name="screen_score" value={productForm.screen_score} onChange={handleProductChange} className="w-full border rounded p-1 text-sm bg-white text-black placeholder-gray-500" /></div>
+                    <div><label className="text-xs">Battery</label><input required type="text" inputMode="numeric" pattern="[0-9]*" name="battery_score" value={productForm.battery_score} onChange={handleProductChange} className="w-full border rounded p-1 text-sm bg-white text-black placeholder-gray-500" /></div>
                   </div>
                 </>
               )}

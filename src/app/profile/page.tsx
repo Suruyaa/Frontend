@@ -38,9 +38,9 @@ export default function ProfilePage() {
   }, [user, router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    if (e.target.name === "phone") {
+    if (e.target.name === "phone" || e.target.name === "postal_code") {
       const value = e.target.value.replace(/\D/g, "");
-      setFormData({ ...formData, phone: value });
+      setFormData({ ...formData, [e.target.name]: value });
     } else {
       setFormData({ ...formData, [e.target.name]: e.target.value });
     }
@@ -194,6 +194,8 @@ export default function ProfilePage() {
               <input 
                 type="text" 
                 name="postal_code"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 value={formData.postal_code}
                 onChange={handleChange}
                 className="w-full md:w-1/3 text-black border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 outline-none"
